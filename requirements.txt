@@ -5,3 +5,4 @@ scikit-learn
 captum
 streamlit
 plotly
+scapy

@@ -127,3 +127,34 @@ class InferenceEngine:
         if len(raw_state.shape) == 1:
             return self.scaler.transform(raw_state.reshape(1, -1))[0]
         return self.scaler.transform(raw_state)
+
+    def simulate_counterfactual(self, history_sequence, raw_modifications, K_steps=5):
+        """
+        Applies hypothetical feature perturbations to the most recent state in the history,
+        re-scales, and performs forward simulation rollout to evaluate 'What-If' scenarios.
+        Args:
+            history_sequence: scaled history matrix of shape (history_len, feature_dim)
+            raw_modifications: dict of {feature_name: new_raw_value}
+            K_steps: forward rollout steps
+        Returns:
+            cf_rollout_states, cf_rollout_probs, perturbed_scaled_seq
+        """
+        # Descale the last state to modify raw values cleanly
+        last_state_raw = self.descale_state(history_sequence[-1])
+        modified_raw = last_state_raw.copy()
+        for feat_name, val in raw_modifications.items():
+            if feat_name in self.feature_cols:
+                col_idx = self.feature_cols.index(feat_name)
+                modified_raw[col_idx] = val
+
+        # Re-scale the modified state
+        modified_scaled = self.scale_state(modified_raw)
+
+        # Construct perturbed history sequence
+        perturbed_seq = history_sequence.copy()
+        perturbed_seq[-1] = modified_scaled
+
+        # Forward rollout
+        cf_rollout_states, cf_rollout_probs = self.forward_rollout(perturbed_seq, K_steps=K_steps)
+        return cf_rollout_states, cf_rollout_probs, perturbed_seq
+
