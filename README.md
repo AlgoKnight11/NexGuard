@@ -148,19 +148,6 @@ NexGaurd automatically correlates forecasted trajectories with the **MITRE ATT&C
 
 ---
 
-##  Design System & Frontend Console
-
-The NexGaurd interface strictly adheres to the requested design specifications:
-
-- **Primary Color**: `#00F2FE` (Electric Neon Cyan) — Active indicators, key metrics, forecast lines.
-- **Secondary Color**: `#06B6D4` (Teal Cyan) — Sub-headers, secondary charts, historical timelines.
-- **Tertiary Color**: `#EF4444` (Crimson Alert Red) — Threat warnings, attack progression curves, Time-To-Compromise countdown.
-- **Neutral Background**: `#0A0E17` (Deep Space Obsidian) — Dashboard background with `#111827` card containers.
-- **Typography**:
-  - Headlines: `Space Grotesk`
-  - Body: Modern clean sans-serif (`Geist` / Inter)
-  - Code & Metrics: `JetBrains Mono`
-
 ### Interactive Dashboard Tabs:
 1. **Command Center & Forward Rollout**:
    - Interactive timeline scrubber across 8,600+ seconds of telemetry.
